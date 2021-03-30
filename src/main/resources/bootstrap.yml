@@ -1,0 +1,48 @@
+security:
+  user:
+    username: username
+    password: 'password'
+
+spring:
+  application:
+    name: prd-config-server
+
+server:
+  port: 8888
+
+management:
+  info:
+    env:
+      enabled: true
+    build:
+      enabled: true
+
+  endpoint:
+    health:
+      show-details: always
+
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    jmx:
+      exposure:
+        include: "*"
+
+---
+
+spring:
+  profiles:
+    active: composite
+  cloud:
+    config:
+      server:
+        composite:
+          - type: git
+            uri: ${GIT_URI}
+            username: ${GIT_USER}
+            password: ${GIT_PASS}
+            search-paths: '{application}'
+            cloneOnStart: true
+            force-pull: true
+            order: 2
